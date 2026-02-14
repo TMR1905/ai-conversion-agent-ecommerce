@@ -1,10 +1,12 @@
 import uuid
 import json
+from pathlib import Path
 import aiosqlite
 
 
 async def init_db(db_path: str):
     """Create tables if they don't exist. Called once on app startup."""
+    Path(db_path).parent.mkdir(parents=True, exist_ok=True)
     async with aiosqlite.connect(db_path) as db:
         await db.executescript("""
             CREATE TABLE IF NOT EXISTS sessions (
